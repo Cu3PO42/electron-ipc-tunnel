@@ -16,6 +16,7 @@
     },
     "filesGlob": [
         "./**/*.ts",
+        "!./**/*.d.ts"
         "./**/*.tsx",
         "!./node_modules/**/*"
     ],
@@ -24,8 +25,6 @@
         "./index.ts",
         "./server-class.ts",
         "./server.ts",
-        "./typings/github-electron/github-electron.d.ts",
-        "./typings/node/node.d.ts"
     ],
     "package": "./package.json"
 }
