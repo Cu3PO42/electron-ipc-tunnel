@@ -1,6 +1,6 @@
 {
   "name": "electron-ipc-tunnel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create tunelled conncections over Electron's IPC.",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/Cu3PO42/electron-ipc-tunnel#readme",
   "typescript": {
-      "definition": "./electron-ipc-tunnel.d.ts"
+    "definition": "./electron-ipc-tunnel.d.ts"
   }
 }
