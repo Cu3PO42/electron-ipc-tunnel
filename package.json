@@ -1,0 +1,23 @@
+{
+  "name": "electron-ipc-tunnel",
+  "version": "1.0.0",
+  "description": "Create tunelled conncections over Electron's IPC.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cu3PO42/electron-ipc-tunnel.git"
+  },
+  "keywords": [
+    "electron",
+    "ipc"
+  ],
+  "author": "Tobias Zimmermann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Cu3PO42/electron-ipc-tunnel/issues"
+  },
+  "homepage": "https://github.com/Cu3PO42/electron-ipc-tunnel#readme"
+}
