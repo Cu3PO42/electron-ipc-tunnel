@@ -1,6 +1,6 @@
-import Client = require("client");
-import Server = require("server");
-import IpcServer = require("server-class");
+import Client = require("./client");
+import Server = require("./server");
+import IpcServer = require("./server-class");
 
 export = {
     Client: Client,

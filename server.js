@@ -1,7 +1,7 @@
 /// <reference path="typings/node/node.d.ts"/>
 /// <reference path="typings/github-electron/github-electron.d.ts" />
 var ipc = require("ipc");
-var IpcServer = require("server-class");
+var IpcServer = require("./server-class");
 var counter = 1;
 ipc.on("paired-request-handle", function (event, arg) {
     event.returnValue = counter++;
