@@ -1,2 +1,4 @@
 *.ts
 tsconfig.json
+.gitignore
+!electron-ipc-tunnel.d.ts
