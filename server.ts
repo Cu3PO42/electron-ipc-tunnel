@@ -1,7 +1,8 @@
 /// <reference path="typings/node/node.d.ts"/>
 /// <reference path="typings/github-electron/github-electron.d.ts" />
 
-import ipc = require("ipc");
+import electron = require("electron");
+const ipc = electron.ipcMain;
 import IpcServer = require("./server-class");
 
 var counter = 1;
