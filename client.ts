@@ -1,13 +1,14 @@
 /// <reference path="typings/node/node.d.ts"/>
 /// <reference path="typings/github-electron/github-electron.d.ts" />
 
-import ipc = require("ipc");
+import electron = require("electron");
+const ipc = electron.ipcRenderer;
 import events = require("events");
 
-var clients: { [handle: number]: IpcClient; } = {};
+var clients: { [handle: string]: IpcClient; } = {};
 
 class IpcClient extends events.EventEmitter {
-    handle: number;
+    handle: string;
 
     send(channel: string, val?: any) {
         ipc.send("paired-message", {handle: this.handle, channel: channel, msg: val});

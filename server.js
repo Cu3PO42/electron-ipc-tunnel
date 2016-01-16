@@ -1,5 +1,3 @@
-/// <reference path="typings/node/node.d.ts"/>
-/// <reference path="typings/github-electron/github-electron.d.ts" />
 var electron = require("electron");
 var ipc = electron.ipcMain;
 var IpcServer = require("./server-class");

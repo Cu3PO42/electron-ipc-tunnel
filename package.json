@@ -19,9 +19,5 @@
   "bugs": {
     "url": "https://github.com/Cu3PO42/electron-ipc-tunnel/issues"
   },
-  "homepage": "https://github.com/Cu3PO42/electron-ipc-tunnel#readme",
-  "typescript": {
-    "definition": "./electron-ipc-tunnel.d.ts"
-  },
-  "typings": "./electron-ipc-tunnel.d.ts"
+  "homepage": "https://github.com/Cu3PO42/electron-ipc-tunnel#readme"
 }

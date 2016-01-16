@@ -1,5 +1,5 @@
 {
-    "version": "1.5.0-beta",
+    "version": "1.7.5",
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
@@ -16,7 +16,7 @@
     },
     "filesGlob": [
         "./**/*.ts",
-        "!./**/*.d.ts"
+        "!./**/*.d.ts",
         "./**/*.tsx",
         "!./node_modules/**/*"
     ],
@@ -24,7 +24,10 @@
         "./client.ts",
         "./index.ts",
         "./server-class.ts",
-        "./server.ts",
+        "./server.ts"
     ],
-    "package": "./package.json"
+    "package": "./package.json",
+    "atom": {
+        "rewriteTsconfig": true
+    }
 }
