@@ -2,4 +2,5 @@
 tsconfig.json
 .gitignore
 !*.d.ts
+fixdts.js
 typings/**/*

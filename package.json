@@ -4,7 +4,8 @@
   "description": "Create tunelled conncections over Electron's IPC.",
   "main": "client.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && tsc --declaration && node ./fixdts.js"
   },
   "repository": {
     "type": "git",
