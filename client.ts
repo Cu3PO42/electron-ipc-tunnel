@@ -1,29 +1,39 @@
 /// <reference path="typings/node/node.d.ts"/>
 /// <reference path="typings/github-electron/github-electron.d.ts" />
 
-import electron = require("electron");
-const ipc = electron.ipcRenderer;
-import events = require("events");
+import { ipcRenderer as ipc } from "electron";
 
 var clients: { [handle: string]: IpcClient; } = {};
 
-class IpcClient extends events.EventEmitter {
+export default class IpcClient {
     handle: string;
+    curPromises: { [id: number]: { resolve: any, reject: any } };
+    eventCount: number = 0;
 
-    send(channel: string, val?: any) {
-        ipc.send("paired-message", {handle: this.handle, channel: channel, msg: val});
+    send(message: string, ...args: any[]) {
+        var id = this.eventCount++;
+        ipc.send("paired-message", {handle: this.handle, id: id, message: message, args: args});
+        return new Promise((resolve, reject) => { 
+            this.curPromises[id] = { resolve: resolve, reject: reject };
+        });
+    }
+
+    resolve(id: number, err: any, res: any) {
+        if (err !== null) {
+            this.curPromises[id].resolve(res);
+        } else {
+            this.curPromises[id].reject(err);
+        }
+        delete this.curPromises[id];
     }
 
     constructor() {
-        super();
         this.handle = ipc.sendSync("paired-request-handle");
         clients[this.handle] = this;
     }
 }
 
 
-ipc.on("paired-reply", function(res) {
-    clients[res.handle].emit(res.channel, res.msg);
+ipc.on("paired-reply", function(e, res) {
+    clients[res.handle].resolve(res.id, res.err, res.res);
 });
-
-export = IpcClient;

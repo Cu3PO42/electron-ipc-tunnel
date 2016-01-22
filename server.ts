@@ -1,9 +1,7 @@
 /// <reference path="typings/node/node.d.ts"/>
 /// <reference path="typings/github-electron/github-electron.d.ts" />
 
-import electron = require("electron");
-const ipc = electron.ipcMain;
-import IpcServer = require("./server-class");
+import { ipcMain as ipc } from "electron";
 
 var counter = 1;
 
@@ -11,12 +9,17 @@ ipc.on("paired-request-handle", function(event, arg) {
     event.returnValue = counter++;
 });
 
-var server = new IpcServer();
+var handler: { [message: string]: (...args: any[]) => Promise<any> } = {};
 
-ipc.on("paired-message", function(event, args) {
-    server.emit(args.channel, function(channel, reply) {
-        event.sender.send("paired-reply", {handle: args.handle, channel: channel, msg: reply});
-    }, args.msg)
-})
+export default function register(message: string, fn: (...args: any[]) => Promise<any>) {
+    handler[message] = fn;
+}
 
-export = server;
+ipc.on("paired-message", async function(event, args) {
+    try {
+        var res = await handler[args.message].apply(null, args.args);
+        event.sender.send("paired-reply", { handle: args.handle, id: args.id, res: res, err: null });
+    } catch (e) {
+        event.sender.send("paired-reply", { handle: args.handle, id: args.id, err: e });
+    }
+});

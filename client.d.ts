@@ -1,21 +1,13 @@
-declare module events {
-    export class EventEmitter {
-        addListener(event: string, listener: Function): EventEmitter;
-        on(event: string, listener: Function): EventEmitter;
-        once(event: string, listener: Function): EventEmitter;
-        removeListener(event: string, listener: Function): EventEmitter;
-        removeAllListeners(event?: string): EventEmitter;
-        setMaxListeners(n: number): EventEmitter;
-        getMaxListeners(): number;
-        listeners(event: string): Function[];
-        emit(event: string, ...args: any[]): boolean;
-        listenerCount(type: string): number;
-    }
-}
-
-declare class IpcClient extends events.EventEmitter {
+export default class IpcClient {
     handle: string;
-    send(channel: string, val?: any): void;
+    curPromises: {
+        [id: number]: {
+            resolve: any;
+            reject: any;
+        };
+    };
+    eventCount: number;
+    send(message: string, ...args: any[]): Promise<{}>;
+    resolve(id: number, err: any, res: any): void;
     constructor();
 }
-export = IpcClient;

@@ -1,3 +1,3 @@
-import IpcServer = require("./server-class");
-declare var server: IpcServer;
-export = server;
+/// <reference path="typings/node/node.d.ts" />
+/// <reference path="typings/github-electron/github-electron.d.ts" />
+export default function register(message: string, fn: (...args: any[]) => Promise<any>): void;

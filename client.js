@@ -1,25 +1,31 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var electron = require("electron");
-var ipc = electron.ipcRenderer;
-var events = require("events");
+"use strict";
+var electron_1 = require("electron");
 var clients = {};
-var IpcClient = (function (_super) {
-    __extends(IpcClient, _super);
-    function IpcClient() {
-        _super.call(this);
-        this.handle = ipc.sendSync("paired-request-handle");
+class IpcClient {
+    constructor() {
+        this.eventCount = 0;
+        this.handle = electron_1.ipcRenderer.sendSync("paired-request-handle");
         clients[this.handle] = this;
     }
-    IpcClient.prototype.send = function (channel, val) {
-        ipc.send("paired-message", { handle: this.handle, channel: channel, msg: val });
-    };
-    return IpcClient;
-})(events.EventEmitter);
-ipc.on("paired-reply", function (res) {
-    clients[res.handle].emit(res.channel, res.msg);
+    send(message, ...args) {
+        var id = this.eventCount++;
+        electron_1.ipcRenderer.send("paired-message", { handle: this.handle, id: id, message: message, args: args });
+        return new Promise((resolve, reject) => {
+            this.curPromises[id] = { resolve: resolve, reject: reject };
+        });
+    }
+    resolve(id, err, res) {
+        if (err !== null) {
+            this.curPromises[id].resolve(res);
+        }
+        else {
+            this.curPromises[id].reject(err);
+        }
+        delete this.curPromises[id];
+    }
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = IpcClient;
+electron_1.ipcRenderer.on("paired-reply", function (e, res) {
+    clients[res.handle].resolve(res.id, res.err, res.res);
 });
-module.exports = IpcClient;
