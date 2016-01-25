@@ -1,4 +1,5 @@
-export default class IpcClient {
+import { EventEmitter } from "events";
+export default class IpcClient extends EventEmitter {
     handle: string;
     curPromises: {
         [id: number]: {
@@ -7,7 +8,7 @@ export default class IpcClient {
         };
     };
     eventCount: number;
-    send(message: string, ...args: any[]): Promise<{}>;
+    send(message: string, ...args: any[]): Promise<any>;
     resolve(id: number, err: any, res: any): void;
     constructor();
 }
