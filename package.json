@@ -1,6 +1,6 @@
 {
   "name": "electron-ipc-tunnel",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "Create tunelled conncections over Electron's IPC.",
   "main": "client.js",
   "scripts": {
