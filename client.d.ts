@@ -12,3 +12,4 @@ export default class IpcClient extends EventEmitter {
     resolve(id: number, err: any, res: any): void;
     constructor();
 }
+export declare function send(message: string, ...args: any[]): Promise<{}>;

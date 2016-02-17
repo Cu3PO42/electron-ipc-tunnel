@@ -4,6 +4,13 @@
 import { ipcRenderer as ipc } from "electron";
 import { EventEmitter } from "events";
 
+function deserializeError(e) {
+    var res = new Error(e.message);
+    res.name = e.name;
+    Object.assign(res, e.props); 
+    return res;
+}
+
 var clients: { [handle: string]: IpcClient; } = {};
 
 export default class IpcClient extends EventEmitter {
@@ -23,7 +30,7 @@ export default class IpcClient extends EventEmitter {
         if (err === null) {
             this.curPromises[id].resolve(res);
         } else {
-            this.curPromises[id].reject(err);
+            this.curPromises[id].reject(deserializeError(err));
         }
         delete this.curPromises[id];
     }
@@ -35,8 +42,28 @@ export default class IpcClient extends EventEmitter {
     }
 }
 
+var unboundPromiseId = 0;
+var unboundPromises: { [id: number]: { resolve: any, reject: any } };
+
+export function send(message: string, ...args: any[]) {
+    var id = unboundPromiseId++;
+    ipc.send("paired-message", {id, message, args});
+    return new Promise((resolve, reject) => {
+        unboundPromises[id] = { resolve, reject };
+    });
+}
+
 ipc.on("paired-result", function(e, res) {
-    clients[res.handle].resolve(res.id, res.err, res.res);
+    if (res.handle !== undefined) {
+        clients[res.handle].resolve(res.id, res.err, res.res);
+    } else {
+        if (res.err === null) {
+            unboundPromises[res.id].resolve(res.res);
+        } else {
+            unboundPromises[res.id].reject(deserializeError(res.err));
+        }
+        delete unboundPromises[res.id];
+    }
 });
 
 ipc.on("paired-reply", function(e, res) {
