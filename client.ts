@@ -43,7 +43,7 @@ export default class IpcClient extends EventEmitter {
 }
 
 var unboundPromiseId = 0;
-var unboundPromises: { [id: number]: { resolve: any, reject: any } };
+var unboundPromises: { [id: number]: { resolve: any, reject: any } } = {};
 
 export function send(message: string, ...args: any[]) {
     var id = unboundPromiseId++;
